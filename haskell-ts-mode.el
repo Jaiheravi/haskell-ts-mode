@@ -23,9 +23,9 @@
 
 ;;; Commentary:
 
-;; This is a major mode that uses tree-sitter to provide all the basic
+;; This is a major mode that uses treesitter to provide all the basic
 ;; major mode stuff, like indentation, font lock, etc...
-;; It uses the grammar at: https://github.com/tree-sitter/tree-sitter-haskell
+;; It uses the grammer at: https://github.com/tree-sitter/tree-sitter-haskell
 
 ;;; Code:
 
@@ -46,7 +46,7 @@
   :group 'langs)
 
 (defcustom haskell-ts-ghci "ghci"
-  "The name or path program to be called to run the ghci REPL.  Any
+  "The name or path program to be called to run the ghci repl.  Any
 arguments to be passed should be added `haskell-ts-ghci-switches`."
   :type 'string)
 
@@ -55,7 +55,7 @@ arguments to be passed should be added `haskell-ts-ghci-switches`."
   :type '(repeat string))
 
 (defcustom haskell-ts-ghci-buffer-name "*Inferior Haskell*"
-  "Buffer name for the ghci process."
+  "Buffer name for the ghci prcoess."
   :type 'string)
 
 (defcustom haskell-ts-use-indent nil
@@ -63,7 +63,7 @@ arguments to be passed should be added `haskell-ts-ghci-switches`."
   :type 'boolean)
 
 (defcustom haskell-ts-font-lock-level 4
-  "Level of font lock, 1 for minimum highlighting and 4 for maximum."
+  "Level of font lock, 1 for minimum highlghting and 4 for maximum."
   :type '(choice (const :tag "Minimal Highlighting" 1)
                  (const :tag "Low Highlighting" 2)
                  (const :tag "High Highlighting" 3)
@@ -71,13 +71,13 @@ arguments to be passed should be added `haskell-ts-ghci-switches`."
 
 (defcustom haskell-ts-prettify-symbols nil
   "Prettify some symbol combinations to unicode symbols.
-This will concatenate `haskell-ts-prettify-symbols-alist' to
+This will concat `haskell-ts-prettify-symbols-alist' to
 `prettify-symbols-alist' in `haskell-ts-mode'."
   :type 'boolean)
 
 (defcustom haskell-ts-prettify-words nil
   "Prettify some words to unicode symbols.
-This will concatenate `haskell-ts-prettify-words-alist' to
+This will concat `haskell-ts-prettify-words-alist' to
 `prettify-symbols-alist' in `haskell-ts-mode'."
   :type 'boolean)
 
@@ -179,7 +179,7 @@ when `haskell-ts-prettify-words' is non-nil.")
      (data_constructor
       (prefix field: (_) @haskell-ts--fontify-arg))
      (type_params (_) @font-lock-variable-name-face)
-     (type_synonym (name) @font-lock-type-face)
+     (type_synomym (name) @font-lock-type-face)
      (data_type name: (name) @font-lock-type-face)
      (newtype name: (name) @font-lock-type-face)
      (deriving "deriving" @font-lock-keyword-face
@@ -233,7 +233,7 @@ when `haskell-ts-prettify-words' is non-nil.")
    :override t
    `((operator) @font-lock-operator-face
      ["=" "," "=>"] @font-lock-operator-face))
-  "The tree-sitter font lock settings for haskell.")
+  "The treesitter font lock settings for haskell.")
 
 (defun haskell-ts--stand-alone-parent (_ parent _ &optional last_non_paren first)
   (save-excursion
@@ -327,7 +327,7 @@ when `haskell-ts-prettify-words' is non-nil.")
         (lambda (_ parent bol)
           (let ((sib (treesit-node-child parent 0)))
             (while (and sib (not (string= (treesit-node-type sib)
-                                          "{"))) ; } Sorry for OCD
+                                          "{"))) ; } Srry for ocd
               (setq sib (treesit-node-next-sibling sib)))
             (if sib
                 (treesit-node-start sib)
@@ -409,11 +409,11 @@ when `haskell-ts-prettify-words' is non-nil.")
        ((node-is "^comment$")
         (lambda (node parent _)
           (pcase node
-            ;; (relevant means type not it haskell-ts--ignore-types)
-            ;; 1. next relevant sibling if exists
+            ;; (relevent means type not it haskell-ts--ignore-types)
+            ;; 1. next relevent sibling if exists
             ((app ,p-sib (and (pred (not null)) n))
              (treesit-node-start n))
-            ;; 2. previous relevant sibling if exists
+            ;; 2. previous relevent sibling if exists
             ((app ,p-prev-sib (and (pred (not null)) n))
              n)
             ;; 3. parent
@@ -487,7 +487,7 @@ when `haskell-ts-prettify-words' is non-nil.")
   "C-c C-r" #'run-haskell)
 
 ;;;###autoload
-(define-derived-mode haskell-ts-mode prog-mode "Haskell"
+(define-derived-mode haskell-ts-mode prog-mode "haskell ts mode"
   "Major mode for Haskell files using tree-sitter."
   :table haskell-ts-mode-syntax-table
   (unless (treesit-ready-p 'haskell)
@@ -513,7 +513,7 @@ when `haskell-ts-prettify-words' is non-nil.")
   (setq-local treesit-thing-settings haskell-ts-thing-settings)
   (setq-local treesit-defun-type-regexp
               ;; Since haskell is strict functional, any 2nd level
-              ;; entity is definition
+              ;; entity is defintion
               (cons ".+"
                     (lambda (node)
                       (and (not (string-match haskell-ts--ignore-types (treesit-node-type node)))
@@ -590,7 +590,7 @@ when `haskell-ts-prettify-words' is non-nil.")
   (haskell-ts-imenu-node-p "data_type\\|newtype" node))
 
 (defun haskell-ts-imenu-typealias-type-p (node)
-  (haskell-ts-imenu-node-p "type_synonym" node))
+  (haskell-ts-imenu-node-p "type_synomym" node))
 
 (defun haskell-ts-defun-name (node)
   (treesit-node-text (treesit-node-child node 0)))
