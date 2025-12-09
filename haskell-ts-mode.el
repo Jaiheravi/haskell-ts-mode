@@ -189,10 +189,10 @@ when `haskell-ts-prettify-words' is non-nil.")
 
    :language 'haskell
    :feature 'match
-   `((match ("|" @font-lock-doc-face) ("=" @font-lock-doc-face))
-     (list_comprehension ("|" @font-lock-doc-face
-                          (qualifiers (generator "<-" @font-lock-doc-face))))
-     (match ("->" @font-lock-doc-face)))
+   `((match ("|" @font-lock-operator-face) ("=" @font-lock-operator-face))
+     (list_comprehension ("|" @font-lock-operator-face
+                          (qualifiers (generator "<-" @font-lock-operator-face))))
+     (match ("->" @font-lock-operator-face)))
 
    :language 'haskell
    :override t
@@ -487,7 +487,7 @@ when `haskell-ts-prettify-words' is non-nil.")
   "C-c C-r" #'run-haskell)
 
 ;;;###autoload
-(define-derived-mode haskell-ts-mode prog-mode "haskell ts mode"
+(define-derived-mode haskell-ts-mode prog-mode "Haskell"
   "Major mode for Haskell files using tree-sitter."
   :table haskell-ts-mode-syntax-table
   (unless (treesit-ready-p 'haskell)
