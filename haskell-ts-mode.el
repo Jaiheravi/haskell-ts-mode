@@ -409,11 +409,11 @@ when `haskell-ts-prettify-words' is non-nil.")
        ((node-is "^comment$")
         (lambda (node parent _)
           (pcase node
-            ;; (relevent means type not it haskell-ts--ignore-types)
-            ;; 1. next relevent sibling if exists
+            ;; (relevant means type not it haskell-ts--ignore-types)
+            ;; 1. next relevant sibling if exists
             ((app ,p-sib (and (pred (not null)) n))
              (treesit-node-start n))
-            ;; 2. previous relevent sibling if exists
+            ;; 2. previous relevant sibling if exists
             ((app ,p-prev-sib (and (pred (not null)) n))
              n)
             ;; 3. parent
